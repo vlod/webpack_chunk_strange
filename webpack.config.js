@@ -8,6 +8,7 @@ var APP_PATH = path.resolve(ROOT_PATH, 'app');
 var BUILD_PATH = path.resolve(ROOT_PATH, 'build');
 
 var TARGET = process.env.npm_lifecycle_event;
+process.env.BABEL_ENV = TARGET;
 
 var common = {
   entry: APP_PATH,
