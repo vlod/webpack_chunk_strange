@@ -3,14 +3,20 @@ var HtmlwebpackPlugin = require('html-webpack-plugin');
 var webpack = require('webpack');
 var merge = require('webpack-merge');
 
-var TARGET = process.env.npm_lifecycle_event;
 var ROOT_PATH = path.resolve(__dirname);
+var APP_PATH = path.resolve(ROOT_PATH, 'app');
+var BUILD_PATH = path.resolve(ROOT_PATH, 'build');
+
+var TARGET = process.env.npm_lifecycle_event;
 
 var common = {
-  entry: path.resolve(ROOT_PATH, 'app'),
+  entry: APP_PATH,
   output: {
-    path: path.resolve(ROOT_PATH, 'build'),
+    path: BUILD_PATH,
     filename: 'bundle.js'
+  },
+  resolve: {
+    extensions: ['', '.js', '.jsx']
   },
   module: {
     loaders: [
@@ -19,6 +25,11 @@ var common = {
         //loaders: ['style', 'css?sourceMap!', 'sass?sourceMap'] // have to potentially hover over chrome (others work fine) to see changes
         loaders: ['style', 'css', 'sass'],
         include: path.resolve(ROOT_PATH, 'app')
+      },
+      {
+        test: /\.jsx?$/,
+        loaders: ['babel'],
+        include: APP_PATH
       }
     ]
   },
