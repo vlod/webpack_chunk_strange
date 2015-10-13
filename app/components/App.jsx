@@ -1,6 +1,8 @@
+import '../vlod.scss';
+
 import React from 'react';
 import Notes from "./Notes.jsx";
-import uuid from 'node-uuid';
+import uuid from 'node-uuid'; //
 
 export default class App extends React.Component {
   constructor(props) {
@@ -22,6 +24,8 @@ export default class App extends React.Component {
         }
       ]
     }
+
+    this.addNote = this.addNote.bind(this);
   }
 
   render() {
@@ -29,8 +33,19 @@ export default class App extends React.Component {
 
     return (
       <div>
+        <h1>hello world</h1>
+        <button className="add-note" onClick={this.addNote}>+</button>
         <Notes items={notes} />
       </div>
     )
+  }
+
+  addNote() {
+    this.setState({
+      notes: this.state.notes.concat([{
+        id: uuid.v4(),
+        task: 'New task'
+      }])
+    });
   }
 }
