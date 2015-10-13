@@ -24,12 +24,6 @@ var common = {
   },
   module: {
     loaders: [
-      // {
-      //   test: /\.scss$/,
-      //   //loaders: ['style', 'css?sourceMap!', 'sass?sourceMap'] // have to potentially hover over chrome (others work fine) to see changes
-      //   loaders: ['style', 'css', 'sass'],
-      //   include: path.resolve(ROOT_PATH, 'app')
-      // },
       {
         test: /\.jsx?$/,
         loaders: ['babel'],
@@ -44,32 +38,6 @@ var common = {
   ]
 };
 
-if(TARGET === 'start' || !TARGET) {
-  module.exports = merge(common, {
-    devtool: 'eval-source-map',
-    module: {
-      loaders: [
-        {
-          test: /\.scss$/,
-          //loaders: ['style', 'css?sourceMap!', 'sass?sourceMap'] // have to potentially hover over chrome (others work fine) to see changes
-          loaders: ['style', 'css', 'sass'],
-          include: APP_PATH
-        }
-      ]
-    },
-    devServer: {
-      port: 3000,
-      historyApiFallback: true,
-      hot: true,
-      inline: true,
-      progress: true
-    },
-    plugins: [
-      new webpack.HotModuleReplacementPlugin()
-    ]
-  });
-}
-
 // production
 if(TARGET === 'build') {
   module.exports = merge(common, {
@@ -79,7 +47,7 @@ if(TARGET === 'build') {
     },
     output: {
       path: BUILD_PATH,
-      filename: 'app.[hash].js'
+      filename: '[name].[chunkhash].js'
     },
     module: {
       loaders: [
@@ -90,19 +58,17 @@ if(TARGET === 'build') {
           // filename: 'application.[hash].js?'
         },
         {
-          test: /\.scss$/,
-          //loaders: ['style', 'css?sourceMap!', 'sass?sourceMap'] // have to potentially hover over chrome (others work fine) to see changes
-          loader: ExtractTextPlugin.extract('style', 'css!sass'),
+          test: /\.css$/,
+          loader: ExtractTextPlugin.extract('style', 'css'),
           include: APP_PATH
         }
       ]
     },
     plugins: [
       new Clean(['build']),
-      new ExtractTextPlugin('styles.[hash].css'),
+      new ExtractTextPlugin('styles.[chunkhash].css'),
       new webpack.DefinePlugin({
         'process.env': {
-          // This affects react lib size
           'NODE_ENV': JSON.stringify('production')
         }
       }),
