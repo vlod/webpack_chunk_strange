@@ -65,8 +65,13 @@ if(TARGET === 'build') {
       ]
     },
     plugins: [
-      new Clean(['build']),
+      new Clean(['build'],{
+        verbose: false // Don't write logs to console
+      }),
       new ExtractTextPlugin('styles.[chunkhash].css'),
+      new webpack.optimize.CommonsChunkPlugin({
+        names: ['manifest']
+      }),
       new webpack.DefinePlugin({
         'process.env': {
           'NODE_ENV': JSON.stringify('production')
